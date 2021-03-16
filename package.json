@@ -1,0 +1,26 @@
+{
+    "name": "pnlog",
+    "displayName": "MUXI POSNET Log",
+    "description": "MUXI POSNET Log support.",
+    "version": "0.0.1",
+    "publisher": "jbamaral",
+    "engines": {
+        "vscode": "^1.23.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "pnlog",
+            "aliases": ["Posnet Log", "pnlog"],
+            "extensions": [".pnlog",".log"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "pnlog",
+            "scopeName": "text.pnlog",
+            "path": "./syntaxes/pnlog.tmLanguage.json"
+        }]
+    }
+}

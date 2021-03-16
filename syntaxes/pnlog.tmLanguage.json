@@ -1,0 +1,225 @@
+{
+    "name": "POSNET Log",
+    "scopeName": "text.pnlog",
+    "fileTypes": [
+        "pnlog",
+        "log"
+    ],
+    "patterns": [{
+            "include": "#common"
+        },
+        {
+            "begin": "(</?)(?:([-_a-zA-Z0-9]+)((:)))?([-_a-zA-Z0-9:]+)",
+            "beginCaptures": {
+                "1": {
+                    "name": "punctuation.definition.tag.begin.pnlog"
+                },
+                "2": {
+                    "name": "entity.name.tag.namespace.pnlog"
+                },
+                "3": {
+                    "name": "entity.name.tag.pnlog"
+                },
+                "4": {
+                    "name": "punctuation.separator.namespace.pnlog"
+                },
+                "5": {
+                    "name": "entity.name.tag.localname.pnlog"
+                }
+            },
+            "end": "(^|/?>)",
+            "endCaptures": {
+                "1": {
+                    "name": "punctuation.definition.tag.end.pnlog"
+                }
+            },
+            "name": "meta.tag.pnlog",
+            "patterns": [{
+                    "include": "#Attribution"
+                },
+                {
+                    "include": "#tagStuff"
+                }
+            ]
+        },
+        {
+            "match": "(calc :|expected :|signature :|digest :|digestCalc :|Signature:)(.*)",
+            "captures": {
+                "2": {
+                    "name": "constant.numeric.pnlog"
+                },
+                "1": {
+                    "name": "support.class.pnlog"
+                }
+            },
+            "name": "meta.pnlog"
+        },
+        {
+            "match" : "ENOERR",
+            "name": "comment.line.double-slash.pnlog"
+        },
+        {
+            "match": "\\b(ST_[_|\\p{Alnum}]*|HTTPS{0,1}|POM|BROWSER|POSNET|DIALING|NS_[A-Z|_]*|GOING_[A-Z]*\\b|LL_ERROR_[\\w_]*|VNE[A-Z]*\\b|PPP_NEG|POSWEB|LINK[_\\s]DOWN|VWERRNO|UNKOWN|VNStatus|PWMAMERR|VNERROR|GOING[_\\s]DOWN|DOWN|ENOERR|INITIALIZING|CLOSED|UP|ni[_|\\p{Alnum}]{2,20}|sdev state changed|state:|layer:)\\b",
+            "name": "entity.name.function.pnlog"
+        },
+        {
+            "match": "((st|ln)[0-9]+:)",
+            "name": "entity.name.interface.pnlog"
+        }
+    ],
+    "repository": {
+        "log_crit": {
+            "patterns": [{
+                "match": "\\[\\s*(CRIT)\\s*\\]|\\[..\\([1]\\)\\]",
+                "name": "invalid.illegal.pnlog"
+            }]
+        },
+        "tagStuff": {
+            "patterns": [{
+                    "match": " (?:([-_a-zA-Z0-9]+)((:)))?([-_a-zA-Z0-9]+)=",
+                    "captures": {
+                        "2": {
+                            "name": "entity.name.type.pnlog"
+                        },
+                        "3": {
+                            "name": "punctuation.separator.namespace.pnlog"
+                        },
+                        "1": {
+                            "name": "entity.name.type.pnlog"
+                        },
+                        "4": {
+                            "name": "entity.name.type.pnlog"
+                        }
+                    }
+                },
+                {
+                    "include": "#common"
+                }
+            ]
+        },
+        "log_err": {
+            "patterns": [{
+                "match": "\\[\\s*(ERR)\\s*\\]|\\[..\\([2]\\)\\]|\\[PDEBUG\\(.\\)\\]",
+                "name": "constant.numeric.hex"
+            }]
+        },
+        "common": {
+            "patterns": [{
+                    "include": "#HttpString"
+                },
+                {
+                    "include": "#Attribution"
+                },
+                {
+                    "include": "#filename"
+                },
+                {
+                    "include": "#doublequotedString"
+                },
+                {
+                    "include": "#singlequotedString"
+                },
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#log_err"
+                },
+                {
+                    "include": "#log_crit"
+                },
+                {
+                    "include": "#hexaValue"
+                },
+                {
+                    "include": "#numericValue"
+                },
+                {
+                    "match": "Console\\.printLn",
+                    "name": "constant.numeric.hex"
+                },
+                {
+                    "match": "\\s(.*)\\b(::)",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.tag.pnlog"
+                        },
+                        "2": {
+                            "name": "invalid.illegal.pnlog"
+                        }
+                    }
+                }
+            ]
+        },
+        "doublequotedString": {
+            "begin": "\"",
+            "name": "string.quoted.double.pnlog",
+            "end": "\"|^"
+        },
+        "HttpString": {
+            "patterns": [{
+                "begin": "http://|https://|pwmam://",
+                "name": "string.quoted.double.pnlog",
+                "end": "\\s|=|>|\\?"
+            }]
+        },
+        "filename": {
+            "match": "[i|f]:.*\\.(\\w+)|[i|f]:\\w+",
+            "name": "support.constant.pnlog"
+        },
+        "comments": {
+            "patterns": [{
+                    "match": "^\\s*\\[..\\(.\\)\\]\\|[0-9]{6}\\|",
+                    "name": "comment.line.double-slash.pnlog"
+                },
+                {
+                    "match": "^ *[0-9]{2}:(\\s|\\||\\.|[0-9]|:)*",
+                    "name": "comment.line.double-slash.pnlog"
+                },
+                {
+                    "match": "([0-9]|[A-F]){8}: ",
+                    "name": "comment.line.double-slash.pnlog"
+                },
+                {
+                    "match": "\\[PW GPRS THREAD\\]\\s([0-9]|:|\\.)*\\s",
+                    "name": "comment.line.double-slash.pnlog"
+                },
+                {
+                    "match": "\\[\\s*(DEBUG|INFO|DUMP)\\s*\\]",
+                    "name": "comment.line.double-slash.pnlog"
+                }
+            ]
+        },
+        "Attribution": {
+            "captures": {
+                "1": {
+                    "name": "entity.name.type.pnlog"
+                },
+                "2": {
+                    "name": "variable.parameter.pnlog"
+                },
+                "3": {
+                    "name": "entity.name.type.pnlog"
+                },
+                "4": {
+                    "name": "variable.parameter.pnlog"
+                }
+            },
+            "match": "([a-zA-Z\\*][\\w_]*)\\s*=((?!.*=)[\\w\\._'\\\"\\s?:$\\(\\);,#\\/]*)|([a-zA-Z\\*][\\w_]*)\\s*=([\\w\\._'\\\"?:$\\(\\);,#\\/]*)",
+            "name": "keyword.other.pnlog"
+        },
+        "hexaValue": {
+            "match": "\\b(0x)?([0-9]|[A-F]|[a-f])+\\b",
+            "name": "variable.parameter.pnlog"
+        },
+        "singlequotedString": {
+            "begin": "'",
+            "name": "string.quoted.single.pnlog",
+            "end": "'|^"
+        },
+        "numericValue": {
+            "match": "([0-9]|\\.)+|[\\s|\\(]([0-9]|[a-f]|[A-F])+[\\b|\\n|\\s|\\)]",
+            "name": "variable.parameter.pnlog"
+        }
+    }
+}
